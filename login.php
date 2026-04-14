@@ -38,18 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<div class="navbar">
-    <div class="nav-left">
-        <a href="index.php">Home</a>
-        <a href="products.php">Products</a>
-        <a href="statistics.php">Statistics</a>
-    </div>
-
-    <div class="nav-right">
-        <a href="login.php">Login</a>
-    </div>
-</div>
+    
+<?php include("navbar.php"); ?>
 
 <a href="javascript:history.length > 1 ? history.back() : 'products.php'" class="back-button">
     ← Back

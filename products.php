@@ -4,28 +4,47 @@ include(__DIR__ . "/config/db.php");
 
 // Pagination
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-if ($page < 1) {
-    $page = 1;
-}
+if ($page < 1) $page = 1;
 
-$limit = 3;
+$limit = 6;
 $offset = ($page - 1) * $limit;
 
-// Total number of products
-$totalSql = "SELECT COUNT(*) AS total FROM products";
-$totalStmt = $conn->query($totalSql);
-$totalProducts = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+// Search
+$search = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Fetch products with seller name
-$sql = "
-    SELECT products.*, sellers.name AS seller_name
-    FROM products
-    LEFT JOIN sellers ON products.seller_id = sellers.id
-    LIMIT $limit OFFSET $offset
-";
-$stmt = $conn->query($sql);
+// Total count（search）
+if ($search != '') {
+    $totalStmt = $conn->prepare("SELECT COUNT(*) FROM products WHERE name LIKE :search");
+    $totalStmt->bindValue(':search', '%' . $search . '%');
+    $totalStmt->execute();
+    $totalProducts = $totalStmt->fetchColumn();
+} else {
+    $totalProducts = $conn->query("SELECT COUNT(*) FROM products")->fetchColumn();
+}
+
+// Main query
+if ($search != '') {
+    $stmt = $conn->prepare("
+        SELECT products.*, sellers.name AS seller_name
+        FROM products
+        LEFT JOIN sellers ON products.seller_id = sellers.id
+        WHERE products.name LIKE :search
+        LIMIT $limit OFFSET $offset
+    ");
+    $stmt->bindValue(':search', '%' . $search . '%');
+    $stmt->execute();
+} else {
+    $stmt = $conn->query("
+        SELECT products.*, sellers.name AS seller_name
+        FROM products
+        LEFT JOIN sellers ON products.seller_id = sellers.id
+        LIMIT $limit OFFSET $offset
+    ");
+}
+
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,34 +55,24 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-<div class="navbar">
-    <div class="nav-left">
-        <a href="index.php">Home</a>
-        <a href="products.php">Products</a>
-        <a href="statistics.php">Statistics</a>
-        <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
-            <a href="add_product.php">Add Product</a>
-        <?php endif; ?>
-    </div>
-
-    <div class="nav-right">
-        <?php if (isset($_SESSION["username"])): ?>
-            <span class="nav-user">
-                <?php echo htmlspecialchars($_SESSION["username"]); ?>
-                (<?php echo htmlspecialchars($_SESSION["role"]); ?>)
-            </span>
-            <a href="logout.php">Logout</a>
-        <?php else: ?>
-            <a href="login.php">Login</a>
-        <?php endif; ?>
-    </div>
-</div>
+<?php include("navbar.php"); ?>
 
 <a href="javascript:history.back()" class="back-button">← Back</a>
 
 <h1 class="page-title">Our Products</h1>
 
+<form method="GET" class="search-box">
+    <input 
+        type="text" 
+        name="search" 
+        placeholder="Search products..." 
+        value="<?php echo htmlspecialchars($search); ?>"
+    >
+    <button type="submit">Search</button>
+</form>
+
 <div class="container">
+
     <div class="products-container">
         <?php foreach ($products as $product): ?>
             <div class="product-card">
@@ -79,7 +88,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="card-actions">
                         <a href="edit_product.php?id=<?php echo $product['id']; ?>">Edit</a>
                         <a href="delete_product.php?id=<?php echo $product['id']; ?>"
-                           onclick="return confirm('Are you sure?');">Delete</a>
+                           onclick="return confirm('Are you sure?');">
+                           Delete
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -88,14 +99,17 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="pagination">
         <?php if ($page > 1): ?>
-            <a href="?page=<?php echo $page - 1; ?>">Previous</a>
+            <a href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>">Previous</a>
         <?php endif; ?>
 
         <?php if ($offset + $limit < $totalProducts): ?>
-            <a href="?page=<?php echo $page + 1; ?>">Next</a>
+            <a href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>">Next</a>
         <?php endif; ?>
     </div>
+
 </div>
+
+<?php include("footer.php"); ?>
 
 </body>
 </html>

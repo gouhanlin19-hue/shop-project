@@ -34,7 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ":seller_id" => $seller_id
         ]);
 
-        $message = "✅ Product added successfully!";
+        header("Location: products.php");
+            exit();
     } catch (PDOException $e) {
         $message = "❌ Error: " . $e->getMessage();
     }
@@ -51,23 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-<!-- Navbar -->
-<div class="navbar">
-    <div class="nav-left">
-        <a href="index.php">Home</a>
-        <a href="products.php">Products</a>
-        <a href="statistics.php">Statistics</a>
-        <a href="add_product.php">Add Product</a>
-    </div>
-
-    <div class="nav-right">
-        <span class="nav-user">
-            <?php echo htmlspecialchars($_SESSION["username"]); ?>
-            (<?php echo htmlspecialchars($_SESSION["role"]); ?>)
-        </span>
-        <a href="logout.php">Logout</a>
-    </div>
-</div>
+<?php include("navbar.php"); ?>
 
 <!-- Back button -->
 <a href="javascript:history.back()" class="back-button">← Back</a>

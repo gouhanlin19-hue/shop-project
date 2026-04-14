@@ -38,25 +38,7 @@ $sellerStats = $groupByStmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-<div class="navbar">
-    <div class="nav-left">
-        <a href="index.php">Home</a>
-        <a href="products.php">Products</a>
-        <a href="statistics.php">Statistics</a>
-    </div>
-
-    <div class="nav-right">
-        <?php if (isset($_SESSION["username"])): ?>
-            <span class="nav-user">
-                <?php echo htmlspecialchars($_SESSION["username"]); ?>
-                (<?php echo htmlspecialchars($_SESSION["role"]); ?>)
-            </span>
-            <a href="logout.php">Logout</a>
-        <?php else: ?>
-            <a href="login.php">Login</a>
-        <?php endif; ?>
-    </div>
-</div>
+<?php include("navbar.php"); ?>
 
 <a href="javascript:history.length > 1 ? history.back() : 'products.php'" class="back-button">
     ← Back

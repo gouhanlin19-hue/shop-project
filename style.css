@@ -97,15 +97,16 @@ h1, h2 {
 
 /* Product cards */
 .products-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .product-card {
     background: white;
-    width: 280px;
+    width: 100%;
     padding: 22px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
@@ -293,10 +294,6 @@ th {
     table {
         width: 90%;
     }
-
-    .product-card {
-        width: 90%;
-    }
 }
 
 /* Back button */
@@ -317,10 +314,29 @@ th {
     background-color: #334155;
 }
 
-.footer {
+.search-box {
     text-align: center;
-    padding: 20px;
-    color: #888;
-    font-size: 14px;
-    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.search-box input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.search-box button {
+    padding: 10px 15px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    margin-left: 10px;
+}
+
+.stats-info {
+    font-size: 18px;
+    color: #475569;
+    margin-bottom: 25px;
 }

@@ -45,12 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id
     ]);
 
-    $message = "Product updated successfully!";
-
-    // Reload updated product data
-    $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
-    $stmt->execute([$id]);
-    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    header("Location: products.php");
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -63,23 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-<div class="navbar">
-    <div class="nav-left">
-        <a href="index.php">Home</a>
-        <a href="sellers.php">Sellers</a>
-        <a href="products.php">Products</a>
-        <a href="statistics.php">Statistics</a>
-        <a href="add_product.php">Add Product</a>
-    </div>
-
-    <div class="nav-right">
-        <span class="nav-user">
-            <?php echo htmlspecialchars($_SESSION["username"]); ?>
-            (<?php echo htmlspecialchars($_SESSION["role"]); ?>)
-        </span>
-        <a href="logout.php">Logout</a>
-    </div>
-</div>
+<?php include("navbar.php"); ?>
 
 <a href="javascript:history.back()" class="back-button">← Back</a>
 
@@ -125,9 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <button type="submit">Update Product</button>
 </form>
 
-<footer class="footer">
-    <p>Online Shop Project © 2026 | SQL + PHP</p>
-</footer>
+<?php include("footer.php"); ?>
 
 </body>
 </html>

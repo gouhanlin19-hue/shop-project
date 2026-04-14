@@ -1,120 +1,88 @@
-# Online Shop Web Application
+# 🛒 Online Shop Project (SQL + PHP)
 
-## Project Overview
-
-This project is a simple web application developed using PHP and MySQL.  
-It allows users to manage products in an online shop system.
-
-The goal of this project is to demonstrate database design, SQL queries, and backend web development concepts.
+This project is a simple **online shop system** built using **PHP and MySQL**.  
+It allows users to browse products, and administrators to manage products (add, edit, delete).
 
 ---
 
-## Database Structure
+## 📌 Features
 
-The database used in this project is called `shop_db`.
+### 👤 User Side
+- View product list
+- Browse product details
 
-It contains the following tables:
-
-### 1. users
-- id (Primary Key)
-- username (UNIQUE)
-- email (UNIQUE)
-- password
-- role (admin / user)
-
-### 2. sellers
-- id (Primary Key)
-- name
-- description
-
-### 3. products
-- id (Primary Key)
-- name
-- price
-- description
-- image
-- seller_id (Foreign Key → sellers.id)
-
-### 4. orders
-- id (Primary Key)
-- user_id (Foreign Key → users.id)
-- total_price
-- created_at
-
-Relationships:
-- One seller can have many products (one-to-many)
-- One user can have many orders (one-to-many)
+### 🔐 Admin Side
+- Add new products
+- Edit existing products
+- Delete products
+- View statistics
 
 ---
 
-## Main Features
-### User Authentication
-- Login and logout system using PHP sessions
-- Role-based access control (admin / user)
-- Only admin can manage products (add, edit, delete)
-
-### Product Management (CRUD)
-- Create: Add new products
-- Read: Display product list
-- Update: Edit existing products
-- Delete: Remove products
-
-### Pagination
-- Products are displayed with pagination using LIMIT and OFFSET
-
-### SQL Aggregation
-- COUNT → total number of products
-- SUM → total price of products
-- AVG → average product price
-- GROUP BY → number of products per seller
-
-### User Interface
-- Simple web pages built with PHP and HTML
-- Basic styling with CSS
-
----
-
-## How to Run the Project
-
-### 1. Start the server
-- Open MAMP
-- Start Apache and MySQL
-
-### 2. Import the database
-- Open phpMyAdmin
-- Import the file: sql/init.sql
-### 3. Place the project
-- Put the project folder inside:
-
-/Applications/MAMP/htdocs/
+## 🧩 Project Structure
 
 
-### 4. Open in browser
-- Products page:
-
-http://localhost:8888/shop-project/products.php
-
-- Add product:
-
-http://localhost:8888/shop-project/add_product.php
-
-- Statistics page:
-
-http://localhost:8888/shop-project/statistics.php
+shop-project/
+│
+├── index.php # Homepage
+├── products.php # Display all products
+├── add_product.php # Add new product
+├── edit_product.php # Edit product
+├── delete_product.php # Delete product
+├── login.php # Login page
+├── logout.php # Logout
+├── statistics.php # Statistics page
+├── db.php # Database connection
+├── init.sql # Database initialization
+└── README.md
 
 
 ---
 
-## Technologies Used
+## ⚙️ Technologies Used
 
 - PHP
 - MySQL
 - HTML / CSS
-- MAMP (local server)
+- (Optional) MAMP / XAMPP for local server
 
 ---
 
-## Author
+## 🚀 How to Run the Project
 
-Student project for SQL Database and PHP Web Development.
+### 1. Clone the repository
 
+```bash
+git clone https://github.com/your-username/shop-project.git
+2. Start local server
+Use MAMP / XAMPP
+Put project in htdocs folder
+3. Import database
+Open phpMyAdmin
+Create a database (e.g. shop)
+Import init.sql
+4. Configure database connection
+
+Edit db.php:
+
+$host = "localhost";
+$dbname = "shop";
+$username = "root";
+$password = "root"; // or your password
+5. Open in browser
+http://localhost:8888/shop-project/index.php
+🧪 Example Pages
+Homepage: /index.php
+Products: /products.php
+Admin Add Product: /add_product.php
+💡 Challenges Faced
+Handling form data with PHP
+Connecting PHP with MySQL
+Debugging SQL and syntax errors
+Managing page navigation (add/edit logic)
+🔧 Future Improvements
+Add shopping cart functionality 🛒
+User registration system
+Better UI design (CSS framework)
+Product categories filter
+Responsive design for mobile
